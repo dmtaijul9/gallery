@@ -7,6 +7,9 @@ body {
   box-sizing: border-box;
 }
 
-.overlay {
-  @apply absolute h-full w-full bg-black/40 flex items-center justify-center  opacity-0 group-hover:opacity-100 transition-all duration-300;
+input[type="checkbox"] {
+  margin: 4px 0 0;
+  line-height: normal;
+  width: 20px;
+  height: 20px;
 }

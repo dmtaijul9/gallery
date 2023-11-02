@@ -47,7 +47,7 @@ const Image = ({ product, handleCheck, checked, isDragging, overlay }) => {
         <input
           type="checkbox"
           name="image"
-          className={`absolute top-2 left-2  ${
+          className={`absolute top-2 left-3  ${
             !overlay ? "group-hover:block" : ""
           } cursor-pointer z-50 ${isChecked && !overlay ? "block" : "hidden"}`}
           id={`checkbox-${product?.id}`}
