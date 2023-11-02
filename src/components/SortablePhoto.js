@@ -25,6 +25,9 @@ export const SortablePhoto = (props) => {
     <Photo
       ref={setNodeRef}
       product={props.product}
+      handleCheck={props.handleCheck}
+      checked={props.checked}
+      isDragging={isDragging}
       style={style}
       {...props}
       {...attributes}

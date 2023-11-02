@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DndContext,
   closestCenter,
@@ -17,10 +17,14 @@ import { Grid } from "./Grid";
 import { SortablePhoto } from "./SortablePhoto";
 import { Photo } from "./Photo";
 
-const DragAndDrop = ({ products }) => {
+const DragAndDrop = ({ products, checked, handleCheck }) => {
   const [items, setItems] = useState(
-    [...products].map((item) => item.id.toString())
+    [...products].map((item) => item?.id?.toString())
   );
+
+  useEffect(() => {
+    setItems([...products].map((item) => item?.id?.toString()));
+  }, [products]);
 
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
@@ -43,6 +47,8 @@ const DragAndDrop = ({ products }) => {
                 key={item}
                 sort={item}
                 product={product}
+                checked={checked}
+                handleCheck={handleCheck}
                 index={index}
               />
             );
@@ -62,7 +68,12 @@ const DragAndDrop = ({ products }) => {
 
       <DragOverlay adjustScale={true}>
         {activeId ? (
-          <Photo product={activeId} index={items.indexOf(activeId)} />
+          <Photo
+            product={activeId}
+            checked={checked}
+            handleCheck={handleCheck}
+            index={items.indexOf(activeId)}
+          />
         ) : null}
       </DragOverlay>
     </DndContext>
