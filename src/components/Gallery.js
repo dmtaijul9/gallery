@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { products as data } from "../utils/data";
-import Image from "./Image";
+
 import DragAndDrop from "./DragAndDrop";
 
 const Gallery = () => {
@@ -28,30 +28,32 @@ const Gallery = () => {
     setChecked([]);
   };
 
+  const totaChecked = checked.length;
+
   return (
     <div className="bg-white rounded-md w-full">
-      <div className="w-full flex py-3 px-5 items-center justify-between">
-        <div>3 Files Selected</div>
+      <div className="w-full flex py-3 px-5 h-16 items-center justify-between">
         <div>
-          <button>Delete files</button>
+          {totaChecked > 0 ? (
+            <p className="text-gray-600 font-semibold">
+              {totaChecked} {totaChecked > 1 ? "Files" : "File"} Selected
+            </p>
+          ) : (
+            <p className="text-gray-600 font-semibold"> Gallery</p>
+          )}
+        </div>
+        <div>
+          {totaChecked > 0 && (
+            <button
+              onClick={handleDelete}
+              className="text-red-500 font-semibold"
+            >
+              Delete {totaChecked > 1 ? "Files" : "File"}
+            </button>
+          )}
         </div>
       </div>
       <hr />
-      {/* <div className="w-full py-5 px-5 grid grid-cols-5 gap-5 first:col-span-2 first:row-span-2">
-        {products.map((product) => {
-          return <Image product={product} key={product.id} />;
-        })}
-        <div className="border-dashed border rounded-lg overflow-hidden ">
-          <div className="w-full h-full flex justify-center items-center flex-col space-y-2 hover:bg-gray-200">
-            <img
-              src="images/image-12.png"
-              alt="image icon"
-              className="max-w-[35px]"
-            />
-            <div className="text-sm text-gray-500">Add Files</div>
-          </div>
-        </div>
-      </div> */}
 
       <section className="max-w-5xl w-screen p-4">
         <DragAndDrop

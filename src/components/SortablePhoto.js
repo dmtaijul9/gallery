@@ -5,7 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Photo } from "./Photo";
 
 export const SortablePhoto = (props) => {
-  const sortable = useSortable({ id: props.product.id });
+  const sortable = useSortable({ id: props.sort });
 
   const {
     attributes,
@@ -25,6 +25,9 @@ export const SortablePhoto = (props) => {
     <Photo
       ref={setNodeRef}
       product={props.product}
+      handleCheck={props.handleCheck}
+      checked={props.checked}
+      isDragging={isDragging}
       style={style}
       {...props}
       {...attributes}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DndContext,
   closestCenter,
@@ -17,9 +17,14 @@ import { Grid } from "./Grid";
 import { SortablePhoto } from "./SortablePhoto";
 import { Photo } from "./Photo";
 
-const DragAndDrop = ({ products }) => {
-  const [items, setItems] = useState([...products]);
-  console.log(items);
+const DragAndDrop = ({ products, checked, handleCheck }) => {
+  const [items, setItems] = useState(
+    [...products].map((item) => item?.id?.toString())
+  );
+
+  useEffect(() => {
+    setItems([...products].map((item) => item?.id?.toString()));
+  }, [products]);
 
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
@@ -33,24 +38,55 @@ const DragAndDrop = ({ products }) => {
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={items} strategy={rectSortingStrategy}>
-        <Grid columns={4}>
-          {items.map((url, index) => (
-            <SortablePhoto key={url} product={url} url={url} index={index} />
-          ))}
+        <Grid columns={5}>
+          {items.map((item, index) => {
+            const [product] = products.filter((product) => product.id === item);
+
+            return (
+              <SortablePhoto
+                key={item}
+                sort={item}
+                product={product}
+                checked={checked}
+                handleCheck={handleCheck}
+                index={index}
+              />
+            );
+          })}
+          <label
+            htmlFor="fileUpload"
+            className="border-dashed border rounded-lg overflow-hidden cursor-pointer"
+          >
+            <div className="w-full h-full flex justify-center items-center flex-col space-y-2 hover:bg-gray-200">
+              <img
+                src="images/image-12.png"
+                alt="image icon"
+                className="max-w-[35px]"
+              />
+              <div className="text-sm text-gray-500">Add Files</div>
+            </div>
+            <input type="file" className="hidden " id="fileUpload" />
+          </label>
         </Grid>
       </SortableContext>
 
       <DragOverlay adjustScale={true}>
         {activeId ? (
-          <Photo product={activeId} index={items.indexOf(activeId)} />
+          <Photo
+            product={activeId}
+            checked={checked}
+            handleCheck={handleCheck}
+            index={items.indexOf(activeId)}
+          />
         ) : null}
       </DragOverlay>
     </DndContext>
   );
 
   function handleDragStart(event) {
-    console.log(event);
-    setActiveId(event.active.id);
+    const [active] = products.filter((item) => item.id === event.active.id);
+
+    setActiveId(active);
   }
 
   function handleDragEnd(event) {
@@ -58,7 +94,6 @@ const DragAndDrop = ({ products }) => {
 
     if (active.id !== over.id) {
       setItems((items) => {
-        console.log(items, active.id, over.id);
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);
 

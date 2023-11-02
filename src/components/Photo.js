@@ -1,23 +1,40 @@
 import React, { forwardRef } from "react";
+import Image from "./Image";
 
 export const Photo = forwardRef(
-  ({ url, product, index, faded, style, ...props }, ref) => {
+  (
+    {
+      product,
+      handleCheck,
+      isDragging,
+      checked,
+      index,
+      faded,
+      style,
+      ...props
+    },
+    ref
+  ) => {
     const inlineStyles = {
       opacity: faded ? "0.2" : "1",
       transformOrigin: "0 0",
-      height: index === 0 ? 410 : 200,
+      maxHeight: index === 0 ? 500 : 250,
       gridRowStart: index === 0 ? "span 2" : null,
       gridColumnStart: index === 0 ? "span 2" : null,
-      backgroundImage: `url("${url}")`,
       backgroundSize: "cover",
       backgroundPosition: "center",
-      backgroundColor: "grey",
+      backgroundColor: "#fff",
       ...style,
     };
 
     return (
       <div ref={ref} style={inlineStyles} {...props}>
-        <img src={product.img} alt="" />
+        <Image
+          product={product}
+          handleCheck={handleCheck}
+          checked={checked}
+          isDragging={isDragging}
+        />
       </div>
     );
   }
