@@ -46,9 +46,9 @@ const Gallery = () => {
           {totaChecked > 0 && (
             <button
               onClick={handleDelete}
-              className="bg-red-500 text-white px-3 py-1 rounded-md"
+              className="text-red-500 font-semibold"
             >
-              Delete
+              Delete {totaChecked > 1 ? "Files" : "File"}
             </button>
           )}
         </div>

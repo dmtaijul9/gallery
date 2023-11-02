@@ -53,7 +53,10 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
               />
             );
           })}
-          <div className="border-dashed border rounded-lg overflow-hidden ">
+          <label
+            htmlFor="fileUpload"
+            className="border-dashed border rounded-lg overflow-hidden cursor-pointer"
+          >
             <div className="w-full h-full flex justify-center items-center flex-col space-y-2 hover:bg-gray-200">
               <img
                 src="images/image-12.png"
@@ -62,7 +65,8 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
               />
               <div className="text-sm text-gray-500">Add Files</div>
             </div>
-          </div>
+            <input type="file" className="hidden " id="fileUpload" />
+          </label>
         </Grid>
       </SortableContext>
 
