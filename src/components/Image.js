@@ -4,7 +4,7 @@ const Image = ({ product }) => {
   const { id, name, img } = product;
   return (
     <div
-      className="first:col-span-2 first:row-span-2 border rounded-lg overflow-hidden shadow relative"
+      className=" border rounded-lg overflow-hidden shadow relative"
       draggable
       key={id}
     >

@@ -21,7 +21,6 @@ const DragAndDrop = ({ products }) => {
   const [items, setItems] = useState(
     [...products].map((item) => item.id.toString())
   );
-  console.log(items);
 
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
@@ -35,15 +34,29 @@ const DragAndDrop = ({ products }) => {
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={items} strategy={rectSortingStrategy}>
-        <Grid columns={4}>
-          {products.map((item, index) => (
-            <SortablePhoto
-              key={item.id}
-              sort={item.id}
-              product={item}
-              index={index}
-            />
-          ))}
+        <Grid columns={5}>
+          {items.map((item, index) => {
+            const [product] = products.filter((product) => product.id === item);
+
+            return (
+              <SortablePhoto
+                key={item}
+                sort={item}
+                product={product}
+                index={index}
+              />
+            );
+          })}
+          <div className="border-dashed border rounded-lg overflow-hidden ">
+            <div className="w-full h-full flex justify-center items-center flex-col space-y-2 hover:bg-gray-200">
+              <img
+                src="images/image-12.png"
+                alt="image icon"
+                className="max-w-[35px]"
+              />
+              <div className="text-sm text-gray-500">Add Files</div>
+            </div>
+          </div>
         </Grid>
       </SortableContext>
 
@@ -56,8 +69,6 @@ const DragAndDrop = ({ products }) => {
   );
 
   function handleDragStart(event) {
-    console.log(event);
-
     const [active] = products.filter((item) => item.id === event.active.id);
 
     setActiveId(active);
@@ -68,7 +79,6 @@ const DragAndDrop = ({ products }) => {
 
     if (active.id !== over.id) {
       setItems((items) => {
-        console.log(items, active.id, over.id);
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);
 
