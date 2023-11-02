@@ -18,7 +18,9 @@ import { SortablePhoto } from "./SortablePhoto";
 import { Photo } from "./Photo";
 
 const DragAndDrop = ({ products }) => {
-  const [items, setItems] = useState([...products]);
+  const [items, setItems] = useState(
+    [...products].map((item) => item.id.toString())
+  );
   console.log(items);
 
   const [activeId, setActiveId] = useState(null);
@@ -34,8 +36,13 @@ const DragAndDrop = ({ products }) => {
     >
       <SortableContext items={items} strategy={rectSortingStrategy}>
         <Grid columns={4}>
-          {items.map((url, index) => (
-            <SortablePhoto key={url} product={url} url={url} index={index} />
+          {products.map((item, index) => (
+            <SortablePhoto
+              key={item.id}
+              sort={item.id}
+              product={item}
+              index={index}
+            />
           ))}
         </Grid>
       </SortableContext>
@@ -50,7 +57,10 @@ const DragAndDrop = ({ products }) => {
 
   function handleDragStart(event) {
     console.log(event);
-    setActiveId(event.active.id);
+
+    const [active] = products.filter((item) => item.id === event.active.id);
+
+    setActiveId(active);
   }
 
   function handleDragEnd(event) {
