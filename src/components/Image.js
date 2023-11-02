@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-const Image = ({ product, handleCheck, checked, isDragging }) => {
+const Image = ({ product, handleCheck, checked, isDragging, overlay }) => {
   const isChecked = checked.includes(product?.id.toString());
 
   useEffect(() => {
@@ -21,11 +21,11 @@ const Image = ({ product, handleCheck, checked, isDragging }) => {
   }, [product?.id]);
 
   return (
-    <div className=" border rounded-lg overflow-hidden shadow relative group">
+    <div className=" border rounded-lg overflow-hidden shadow relative group w-full h-full">
       <div
         className={`absolute h-full w-full bg-black/40 flex items-center justify-center   ${
-          isDragging ? "" : "group-hover:opacity-100"
-        } transition-all duration-200 ${
+          isDragging ? "" : overlay ? "" : "group-hover:opacity-100"
+        }  ${
           isDragging && isChecked
             ? "opacity-0"
             : isChecked
@@ -34,7 +34,11 @@ const Image = ({ product, handleCheck, checked, isDragging }) => {
         }`}
       ></div>
 
-      <div className={`${isDragging ? "invisible" : "visible"}`}>
+      <div
+        className={`w-full h-full border-lg ${
+          isDragging ? "invisible" : "visible"
+        }`}
+      >
         <label htmlFor={`product_${product?.id}`}>
           <div>
             <img src={product?.img} alt={product?.name} className="w-full" />
@@ -43,9 +47,9 @@ const Image = ({ product, handleCheck, checked, isDragging }) => {
         <input
           type="checkbox"
           name="image"
-          className={`absolute top-2 left-2  group-hover:block cursor-pointer z-50 ${
-            isChecked ? "block" : "hidden"
-          }`}
+          className={`absolute top-2 left-2  ${
+            !overlay ? "group-hover:block" : ""
+          } cursor-pointer z-50 ${isChecked && !overlay ? "block" : "hidden"}`}
           id={`checkbox-${product?.id}`}
           checked={isChecked}
           onChange={handleCheck}

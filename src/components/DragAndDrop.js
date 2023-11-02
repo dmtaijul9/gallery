@@ -55,7 +55,7 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
           })}
           <label
             htmlFor="fileUpload"
-            className="border-dashed border rounded-lg overflow-hidden cursor-pointer"
+            className="border-dashed w-full h-full min-w-[180px] min-h-[180px] border-2 rounded-lg overflow-hidden cursor-pointer"
           >
             <div className="w-full h-full flex justify-center items-center flex-col space-y-2 hover:bg-gray-200">
               <img
@@ -76,6 +76,7 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
             product={activeId}
             checked={checked}
             handleCheck={handleCheck}
+            overlay
             index={items.indexOf(activeId)}
           />
         ) : null}

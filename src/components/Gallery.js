@@ -31,7 +31,7 @@ const Gallery = () => {
   const totaChecked = checked.length;
 
   return (
-    <div className="bg-white rounded-md w-full">
+    <div className="bg-white rounded-md w-full h-full">
       <div className="w-full flex py-3 px-5 h-16 items-center justify-between">
         <div>
           {totaChecked > 0 ? (

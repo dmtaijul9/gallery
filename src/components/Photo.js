@@ -8,6 +8,7 @@ export const Photo = forwardRef(
       handleCheck,
       isDragging,
       checked,
+      overlay,
       index,
       faded,
       style,
@@ -18,7 +19,6 @@ export const Photo = forwardRef(
     const inlineStyles = {
       opacity: faded ? "0.2" : "1",
       transformOrigin: "0 0",
-      maxHeight: index === 0 ? 500 : 250,
       gridRowStart: index === 0 ? "span 2" : null,
       gridColumnStart: index === 0 ? "span 2" : null,
       backgroundSize: "cover",
@@ -28,11 +28,17 @@ export const Photo = forwardRef(
     };
 
     return (
-      <div ref={ref} style={inlineStyles} {...props}>
+      <div
+        ref={ref}
+        style={inlineStyles}
+        {...props}
+        className="rounded-lg overflow-hidden"
+      >
         <Image
           product={product}
           handleCheck={handleCheck}
           checked={checked}
+          overlay={overlay}
           isDragging={isDragging}
         />
       </div>
