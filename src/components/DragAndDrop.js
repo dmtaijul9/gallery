@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+
+/* imported all required library for drag and drop component */
 import {
   DndContext,
   closestCenter,
@@ -14,22 +16,29 @@ import {
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Grid } from "./Grid";
-import { SortablePhoto } from "./SortablePhoto";
-import { Photo } from "./Photo";
+import { SortableImage } from "./SortableImage";
+import { Image } from "./Image";
+import UploadImage from "./UploadImage";
 
-const DragAndDrop = ({ products, checked, handleCheck }) => {
+const DragAndDrop = ({ images, checked, handleCheck }) => {
+  /* making a array for sorting or reordering items (images) in gallery from id of images array of object */
   const [items, setItems] = useState(
-    [...products].map((item) => item?.id?.toString())
+    [...images].map((item) => item?.id?.toString())
   );
 
-  useEffect(() => {
-    setItems([...products].map((item) => item?.id?.toString()));
-  }, [products]);
-
+  /* state for active image which is grabbing*/
   const [activeId, setActiveId] = useState(null);
+
+  /* using mouse and touch sensor for drag and drop */
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
+  /* updating the items array when images array is updated */
+  useEffect(() => {
+    setItems([...images].map((item) => item?.id?.toString()));
+  }, [images]);
+
   return (
+    /* DndContext is the wrapper for drag and drop component */
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
@@ -37,45 +46,41 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
+      {/* SortableContext is the wrapper for sortable items */}
       <SortableContext items={items} strategy={rectSortingStrategy}>
+        {/* Grid is the wrapper for all images */}
         <Grid columns={5}>
+          {/* mapping all images from images array */}
           {items.map((item, index) => {
-            const [product] = products.filter((product) => product.id === item);
+            /* getting the image from images array by matching id of image with item */
+            const [image] = images.filter((image) => image.id === item);
 
+            /* returning the SortableImage component for each image and passing some usefull props throw this component */
             return (
-              <SortablePhoto
+              <SortableImage
                 key={item}
                 sort={item}
-                product={product}
+                image={image}
                 checked={checked}
                 handleCheck={handleCheck}
                 index={index}
               />
             );
           })}
-          <label
-            htmlFor="fileUpload"
-            className="border-dashed border rounded-lg overflow-hidden cursor-pointer"
-          >
-            <div className="w-full h-full flex justify-center items-center flex-col space-y-2 hover:bg-gray-200">
-              <img
-                src="images/image-12.png"
-                alt="image icon"
-                className="max-w-[35px]"
-              />
-              <div className="text-sm text-gray-500">Add Files</div>
-            </div>
-            <input type="file" className="hidden " id="fileUpload" />
-          </label>
+          {/* UploadImage component for uploading new images (JUST FOR UI PURPOSE )*/}
+          <UploadImage />
         </Grid>
       </SortableContext>
 
+      {/* DragOverlay is the wrapper for active image which is grabbing */}
       <DragOverlay adjustScale={true}>
+        {/* returning the Image component for active image */}
         {activeId ? (
-          <Photo
-            product={activeId}
+          <Image
+            image={activeId}
             checked={checked}
             handleCheck={handleCheck}
+            overlay
             index={items.indexOf(activeId)}
           />
         ) : null}
@@ -83,27 +88,39 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
     </DndContext>
   );
 
+  /* Event for dragging started and called in dragging time  */
   function handleDragStart(event) {
-    const [active] = products.filter((item) => item.id === event.active.id);
+    /* getting ative item which is dragging  */
+    const [active] = images.filter((item) => item.id === event.active.id);
 
+    /* setting active item id in state */
     setActiveId(active);
   }
 
+  /* Event for dragging ended and called when dragging is ended  */
   function handleDragEnd(event) {
+    /* getting active and over item from event */
     const { active, over } = event;
 
-    if (active.id !== over.id) {
+    /* checking if active item id is not equal to over item id then reordering the items array */
+    if (active.id !== over?.id) {
+      /* updating the items array */
       setItems((items) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
+        /* getting the index of active and over item */
+        const oldIndex = items.indexOf(active?.id);
+        const newIndex = items.indexOf(over?.id);
+
+        /* reordering the items array */
 
         return arrayMove(items, oldIndex, newIndex);
       });
     }
 
+    /* setting active item id to null */
     setActiveId(null);
   }
 
+  /* Event for dragging canceled and called when dragging is canceled  */
   function handleDragCancel() {
     setActiveId(null);
   }
