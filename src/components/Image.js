@@ -16,6 +16,7 @@ export const Image = forwardRef(
     },
     ref
   ) => {
+    /* making some style for specific image compontent as grid child */
     const inlineStyles = {
       opacity: faded ? "0.2" : "1",
       transformOrigin: "0 0",
@@ -27,6 +28,7 @@ export const Image = forwardRef(
       ...style,
     };
 
+    /* returning the ImageCard component and passing some usefull props throw this component */
     return (
       <div
         ref={ref}

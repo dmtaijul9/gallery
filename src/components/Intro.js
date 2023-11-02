@@ -4,6 +4,8 @@ import { CgWebsite } from "react-icons/cg";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
+/* This Component just for introducing Myself ( applicants ) */
+
 const Intro = () => {
   const tooltipStyle = { backgroundColor: "black" };
   return (
