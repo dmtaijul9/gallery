@@ -14,17 +14,18 @@ import {
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Grid } from "./Grid";
-import { SortablePhoto } from "./SortablePhoto";
-import { Photo } from "./Photo";
+import { SortableImage } from "./SortableImage";
+import { Image } from "./Image";
+import UploadImage from "./UploadImage";
 
-const DragAndDrop = ({ products, checked, handleCheck }) => {
+const DragAndDrop = ({ images, checked, handleCheck }) => {
   const [items, setItems] = useState(
-    [...products].map((item) => item?.id?.toString())
+    [...images].map((item) => item?.id?.toString())
   );
 
   useEffect(() => {
-    setItems([...products].map((item) => item?.id?.toString()));
-  }, [products]);
+    setItems([...images].map((item) => item?.id?.toString()));
+  }, [images]);
 
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
@@ -40,40 +41,27 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
       <SortableContext items={items} strategy={rectSortingStrategy}>
         <Grid columns={5}>
           {items.map((item, index) => {
-            const [product] = products.filter((product) => product.id === item);
+            const [image] = images.filter((image) => image.id === item);
 
             return (
-              <SortablePhoto
+              <SortableImage
                 key={item}
                 sort={item}
-                product={product}
+                image={image}
                 checked={checked}
                 handleCheck={handleCheck}
                 index={index}
               />
             );
           })}
-          <label
-            htmlFor="fileUpload"
-            className="border-dashed w-full h-full min-w-[180px] min-h-[180px] border-2 rounded-lg overflow-hidden cursor-pointer"
-          >
-            <div className="w-full h-full flex justify-center items-center flex-col space-y-2 hover:bg-gray-200">
-              <img
-                src="images/image-12.png"
-                alt="image icon"
-                className="max-w-[35px]"
-              />
-              <div className="text-sm text-gray-500">Add Files</div>
-            </div>
-            <input type="file" className="hidden " id="fileUpload" />
-          </label>
+          <UploadImage />
         </Grid>
       </SortableContext>
 
       <DragOverlay adjustScale={true}>
         {activeId ? (
-          <Photo
-            product={activeId}
+          <Image
+            image={activeId}
             checked={checked}
             handleCheck={handleCheck}
             overlay
@@ -85,7 +73,7 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
   );
 
   function handleDragStart(event) {
-    const [active] = products.filter((item) => item.id === event.active.id);
+    const [active] = images.filter((item) => item.id === event.active.id);
 
     setActiveId(active);
   }
@@ -93,10 +81,10 @@ const DragAndDrop = ({ products, checked, handleCheck }) => {
   function handleDragEnd(event) {
     const { active, over } = event;
 
-    if (active.id !== over.id) {
+    if (active.id !== over?.id) {
       setItems((items) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
+        const oldIndex = items.indexOf(active?.id);
+        const newIndex = items.indexOf(over?.id);
 
         return arrayMove(items, oldIndex, newIndex);
       });

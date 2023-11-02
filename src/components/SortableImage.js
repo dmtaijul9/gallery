@@ -2,9 +2,9 @@ import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import { Photo } from "./Photo";
+import { Image } from "./Image";
 
-export const SortablePhoto = (props) => {
+export const SortableImage = (props) => {
   const sortable = useSortable({ id: props.sort });
 
   const {
@@ -22,9 +22,9 @@ export const SortablePhoto = (props) => {
   };
 
   return (
-    <Photo
+    <Image
       ref={setNodeRef}
-      product={props.product}
+      product={props.image}
       handleCheck={props.handleCheck}
       checked={props.checked}
       isDragging={isDragging}

@@ -4,7 +4,7 @@ import { products as data } from "../utils/data";
 import DragAndDrop from "./DragAndDrop";
 
 const Gallery = () => {
-  const [products, setProducts] = useState([...data]);
+  const [images, setImages] = useState([...data]);
   const [checked, setChecked] = useState([]);
 
   const handleCheck = (event) => {
@@ -20,11 +20,11 @@ const Gallery = () => {
   };
 
   const handleDelete = () => {
-    const updatedProducts = products.filter((product) => {
-      return !checked.includes(product.id.toString());
+    const updatedProducts = images.filter((image) => {
+      return !checked.includes(image.id.toString());
     });
 
-    setProducts(updatedProducts);
+    setImages(updatedProducts);
     setChecked([]);
   };
 
@@ -57,7 +57,7 @@ const Gallery = () => {
 
       <section className="max-w-5xl w-screen p-4">
         <DragAndDrop
-          products={products}
+          images={images}
           checked={checked}
           handleCheck={handleCheck}
         />

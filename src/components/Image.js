@@ -1,63 +1,47 @@
-import React, { useEffect } from "react";
+import React, { forwardRef } from "react";
+import ImageCard from "./ImageCard";
 
-const Image = ({ product, handleCheck, checked, isDragging, overlay }) => {
-  const isChecked = checked.includes(product?.id.toString());
-
-  useEffect(() => {
-    const handleCheckboxMouseDown = (event) => {
-      // Prevent drag behavior when interacting with the checkbox
-
-      event.stopPropagation();
+export const Image = forwardRef(
+  (
+    {
+      image,
+      handleCheck,
+      isDragging,
+      checked,
+      overlay,
+      index,
+      faded,
+      style,
+      ...props
+    },
+    ref
+  ) => {
+    const inlineStyles = {
+      opacity: faded ? "0.2" : "1",
+      transformOrigin: "0 0",
+      gridRowStart: index === 0 ? "span 2" : null,
+      gridColumnStart: index === 0 ? "span 2" : null,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundColor: "#fff",
+      ...style,
     };
 
-    // Attach the event listener when the component mounts
-    const checkbox = document.getElementById(`checkbox-${product?.id}`);
-    checkbox.addEventListener("mousedown", handleCheckboxMouseDown);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      checkbox.removeEventListener("mousedown", handleCheckboxMouseDown);
-    };
-  }, [product?.id]);
-
-  return (
-    <div className=" border rounded-lg overflow-hidden shadow relative group w-full h-full">
+    return (
       <div
-        className={`absolute h-full w-full bg-black/40 flex items-center justify-center   ${
-          isDragging ? "" : overlay ? "" : "group-hover:opacity-100"
-        }  ${
-          isDragging && isChecked
-            ? "opacity-0"
-            : isChecked
-            ? "opacity-40"
-            : "opacity-0"
-        }`}
-      ></div>
-
-      <div
-        className={`w-full h-full border-lg ${
-          isDragging ? "invisible" : "visible"
-        }`}
+        ref={ref}
+        style={inlineStyles}
+        {...props}
+        className="rounded-lg overflow-hidden"
       >
-        <label htmlFor={`product_${product?.id}`}>
-          <div>
-            <img src={product?.img} alt={product?.name} className="w-full" />
-          </div>
-        </label>
-        <input
-          type="checkbox"
-          name="image"
-          className={`absolute top-2 left-3  ${
-            !overlay ? "group-hover:block" : ""
-          } cursor-pointer z-50 ${isChecked && !overlay ? "block" : "hidden"}`}
-          id={`checkbox-${product?.id}`}
-          checked={isChecked}
-          onChange={handleCheck}
-          value={product?.id}
+        <ImageCard
+          image={image}
+          handleCheck={handleCheck}
+          checked={checked}
+          overlay={overlay}
+          isDragging={isDragging}
         />
       </div>
-    </div>
-  );
-};
-
-export default Image;
+    );
+  }
+);

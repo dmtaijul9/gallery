@@ -7,9 +7,13 @@ body {
   box-sizing: border-box;
 }
 
+/* START:  Making larger checkbox icon css  */
+
 input[type="checkbox"] {
   margin: 4px 0 0;
   line-height: normal;
   width: 20px;
   height: 20px;
 }
+
+/* END:  Making larger checkbox icon css  */
